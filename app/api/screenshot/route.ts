@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-core';
+import chromium from '@sparticuz/chromium';
 
 type Device = 'desktop' | 'tablet' | 'mobile';
 
@@ -11,8 +12,22 @@ interface Screenshot {
 export async function POST(req: Request){
   const { url, devices } = await req.json();
 
+  let browser;
+
   try {
-    const browser = await puppeteer.launch();
+    if (process.env.NODE_ENV === "production") {
+      // In production (Vercel), use chrome-aws-lambda
+      browser = await puppeteer.launch({
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath(),
+        headless: chromium.headless,
+      });
+    } else {
+      // In development, use regular puppeteer
+      const puppeteerDev = await import('puppeteer'); // Import dynamically for dev
+      browser = await puppeteerDev.launch({ headless: true });
+    }
     const screenshots: Screenshot[] = [];
 
     for (const device of devices) {
