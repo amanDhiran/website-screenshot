@@ -3,11 +3,6 @@ import puppeteer from 'puppeteer';
 
 type Device = 'desktop' | 'tablet' | 'mobile';
 
-interface RequestBody {
-  url: string;
-  devices: Device[];
-}
-
 interface Screenshot {
   device: Device;
   url: string;
