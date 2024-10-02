@@ -1,5 +1,6 @@
 import { Hero } from "@/components/Hero";
 import type { Metadata } from "next";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Website Screenshot Generator",
@@ -8,13 +9,14 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <div className="container mx-auto p-4">
-      <div className="mb-16 mt-6">
+      <div className="mb-10 mt-6">
         <h1 className="text-3xl lg:text-5xl max-w-3xl mx-auto text-primary text-center font-bold">
           Effortless Website Snapshots for Desktop, Tablet, and Mobile
         </h1>
       </div>
-
+      
       <Hero />
+
       <section className="mt-16 bg-primary text-primary-foreground py-12 rounded-lg">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>

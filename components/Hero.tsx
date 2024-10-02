@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
 import {useDispatch} from "react-redux"
 import { setScreenshots } from "@/store/screenshotSlice";
+import Image from "next/image";
 
 export type Device = "desktop" | "tablet" | "mobile";
 
@@ -72,8 +73,10 @@ export function Hero() {
     );
   };
   return (
-    <>
-      <Card className="max-w-lg mb-20 overflow-hidden mx-auto pt-0">
+    <div className="max-w-lg mx-auto">
+      <Image src="/Frame.svg" alt="" height={50} width={160} className="ml-auto " />
+      <Card className="mb-20 mt-4 overflow-hidden  pt-0">
+
         <form onSubmit={handleSubmit}>
           {/* <div className="mb-4"> */}
           <CardHeader>
@@ -118,6 +121,7 @@ export function Hero() {
           </CardFooter>
         </form>
       </Card>
-    </>
+      
+    </div>
   );
 }
