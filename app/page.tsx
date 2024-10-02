@@ -46,7 +46,7 @@ export default function Home() {
           </div>
         </section>
 
-      <section className="mt-16 bg-gray-100 p-10 rounded-xl">
+      <section id="features" className="mt-16 bg-gray-100 p-10 rounded-xl">
         <h2 className="text-3xl font-bold text-center mb-9">
           Features
         </h2>
