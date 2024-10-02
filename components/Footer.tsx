@@ -13,7 +13,7 @@ export function Footer() {
           rel="noopener noreferrer"
           className="hover:text-foreground"
         >
-            <p className="text-muted-foreground hover:text-foreground transition-colors">
+            <p className="text-muted-foreground hover:text-primary transition-colors">
             @amanDhiran
             </p>
         </a>

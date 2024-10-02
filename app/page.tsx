@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <div className="container mx-auto p-4">
       <div className="mb-16 mt-6">
-        <h1 className="text-3xl lg:text-5xl max-w-3xl mx-auto text-center font-bold">
+        <h1 className="text-3xl lg:text-5xl max-w-3xl mx-auto text-primary text-center font-bold">
           Effortless Website Snapshots for Desktop, Tablet, and Mobile
         </h1>
       </div>
