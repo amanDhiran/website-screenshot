@@ -1,7 +1,3 @@
-import { Github } from "lucide-react";
-import Link from "next/link";
-import { Button } from "./ui/button";
-
 export function Footer() {
   return (
     <div className="my-3 pt-4 border-t">
@@ -13,9 +9,9 @@ export function Footer() {
           rel="noopener noreferrer"
           className="hover:text-foreground"
         >
-            <p className="text-muted-foreground hover:text-primary transition-colors">
+          <p className="text-muted-foreground hover:text-primary transition-colors">
             @amanDhiran
-            </p>
+          </p>
         </a>
       </div>
     </div>

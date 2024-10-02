@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Card, CardContent } from "./ui/card";
 import { Screenshot } from "./Hero";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
