@@ -1,5 +1,5 @@
 "use client";
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useEffect } from "react";
 import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -8,12 +8,12 @@ import {
   Card,
   CardHeader,
   CardContent,
-  CardTitle,
   CardFooter,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { ScreenshotCard } from "./ScreenshotCard";
 import { useRouter } from "next/navigation";
+import {useDispatch} from "react-redux"
+import { setScreenshots } from "@/store/screenshotSlice";
 
 export type Device = "desktop" | "tablet" | "mobile";
 
@@ -25,8 +25,10 @@ export function Hero() {
   const [url, setUrl] = useState<string>("");
   const [devices, setDevices] = useState<Device[]>(["desktop"]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [screenshots, setScreenshots] = useState<Screenshot[]>([]);
+  const [showDelayMessage, setShowDelayMessage] = useState<boolean>(false);
 
+
+  const dispatch = useDispatch();
   const router = useRouter();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -38,7 +40,8 @@ export function Hero() {
         "/api/screenshot",
         { url, devices }
       );
-      setScreenshots(response.data.screenshots);
+      dispatch(setScreenshots(response.data.screenshots));
+      router.push("/screenshots")
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error("Axios error:", error.response?.data || error.message);
@@ -49,6 +52,17 @@ export function Hero() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+
+    if (isLoading) {
+      timer = setTimeout(() => setShowDelayMessage(true), 2000); // 3-second delay
+    }
+
+    // Clean up the timer when loading stops or component unmounts
+    return () => clearTimeout(timer);
+  }, [isLoading]);
 
   const handleDeviceToggle = (device: Device) => {
     setDevices((prev) =>
@@ -96,24 +110,14 @@ export function Hero() {
             </div>
           </CardContent>
           {/* </div> */}
-          <CardFooter>
+          <CardFooter className="flex flex-col gap-1 items-start">
             <Button className="w-full" type="submit" disabled={isLoading || url === ""}>
               {isLoading ? "Generating..." : "Generate Screenshots"}
             </Button>
+            {showDelayMessage && <p className="text-xs font-medium text-red-500">*This might take a while, please wait</p>}
           </CardFooter>
         </form>
       </Card>
-
-      {screenshots.length > 0 && (
-        <div>
-          <h2 className="text-2xl font-bold mb-2">Generated Screenshots</h2>
-          <div className="md:px-20 flex-col flex gap-4">
-            {screenshots.map((screenshot, index) => (
-              <ScreenshotCard screenshot={screenshot} key={index}/>
-            ))}
-          </div>
-        </div>
-      )}
     </>
   );
 }

@@ -1,8 +1,12 @@
-// "use client"
+"use client"; // Mark this as a client component
 
-import { ThemeProvider as NextThemesProvider } from "next-themes"
-import { type ThemeProviderProps } from "next-themes/dist/types"
+import { Provider } from 'react-redux';
+import { store } from '@/store/store';
 
-export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
-  return <NextThemesProvider {...props}>{children}</NextThemesProvider>
+export function Providers({ children }: { children: React.ReactNode }) {
+  return (
+    <Provider store={store}>
+      {children}
+    </Provider>
+  );
 }

@@ -7,7 +7,7 @@ export function Navbar() {
   const { theme, setTheme } = useTheme();
 
   return (
-    <div className="flex py-4 justify-between">
+    <div className="flex py-4 max-w-6xl m-auto justify-between">
       <div>LOGO</div>
       <div className="flex items-center gap-2">
         {/* <Button
