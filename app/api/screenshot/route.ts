@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
-import puppeteer from 'puppeteer-core';
-import chromium from '@sparticuz/chromium';
+// import puppeteer from 'puppeteer-core';
+// import chromium from '@sparticuz/chromium';
+import { chromium, devices as playwrightDevices } from 'playwright';
+
 
 type Device = 'desktop' | 'tablet' | 'mobile';
 
@@ -13,41 +15,54 @@ export async function POST(req: Request){
   const { url, devices } = await req.json();
 
   let browser;
-  console.log(await chromium.executablePath());
   
   try {
-    if (process.env.NODE_ENV === "production") {
-      // In production (Vercel), use chrome-aws-lambda
-      browser = await puppeteer.launch({
-        args: chromium.args,
-      defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath(),
-      headless: chromium.headless,
-      ignoreHTTPSErrors: true,
-    });
+    // if (process.env.NODE_ENV === "production") {
+    //   // In production (Vercel), use chrome-aws-lambda
+    //   browser = await puppeteer.launch({
+    //     args: chromium.args,
+    //   defaultViewport: chromium.defaultViewport,
+    //   executablePath: await chromium.executablePath(),
+    //   headless: chromium.headless,
+    //   ignoreHTTPSErrors: true,
+    // });
       
-    } else {
-      // In development, use regular puppeteer
-      const puppeteerDev = await import('puppeteer'); // Import dynamically for dev
-      browser = await puppeteerDev.launch({ headless: true });
-    }
+    // } else {
+    //   // In development, use regular puppeteer
+    //   const puppeteerDev = await import('puppeteer'); // Import dynamically for dev
+    //   browser = await puppeteerDev.launch({ headless: true });
+    // }
+    
+    browser = await chromium.launch({
+      headless: true // For both development and production
+    });
+    
     const screenshots: Screenshot[] = [];
 
     for (const device of devices) {
-      const page = await browser.newPage();
+      // const page = await browser.newPage();
       
-      // Set viewport size based on device
-      if (device === 'desktop') {
-        await page.setViewport({ width: 1920, height: 1080 });
-      } else if (device === 'tablet') {
-        await page.setViewport({ width: 768, height: 1024 });
-      } else if (device === 'mobile') {
-        await page.setViewport({ width: 375, height: 667 });
-      }
+      // // Set viewport size based on device
+      // if (device === 'desktop') {
+      //   await page.setViewport({ width: 1920, height: 1080 });
+      // } else if (device === 'tablet') {
+      //   await page.setViewport({ width: 768, height: 1024 });
+      // } else if (device === 'mobile') {
+      //   await page.setViewport({ width: 375, height: 667 });
+      // }
 
-      await page.goto(url, { waitUntil: 'networkidle2' });
+      const context = await browser.newContext({
+        viewport: device === 'desktop' ? { width: 1920, height: 1080 } :
+                  device === 'tablet' ? { width: 768, height: 1024 } :
+                                        { width: 375, height: 667 },
+      });
+      const page = await context.newPage();
+
+      await page.goto(url, { waitUntil: 'networkidle' });
       
-      const screenshot = await page.screenshot({ encoding: 'base64' });
+      // const screenshot = await page.screenshot({ encoding: 'base64' });
+      const buffer = await page.screenshot()
+      const screenshot = buffer.toString('base64')
       screenshots.push({
         device,
         url: `data:image/png;base64,${screenshot}`
