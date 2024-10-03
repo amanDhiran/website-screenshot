@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 // import puppeteer from 'puppeteer-core';
 // import chromium from '@sparticuz/chromium';
-import { chromium, devices as playwrightDevices } from 'playwright';
+import { chromium } from 'playwright';
 
 
 type Device = 'desktop' | 'tablet' | 'mobile';
