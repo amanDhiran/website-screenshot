@@ -28,6 +28,7 @@ export function Hero() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showDelayMessage, setShowDelayMessage] = useState<boolean>(false);
 
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -38,7 +39,7 @@ export function Hero() {
 
     try {
       const response = await axios.post<{ screenshots: Screenshot[] }>(
-        "/api/screenshot",
+        `${BACKEND_URL}`,
         { url, devices }
       );
       dispatch(setScreenshots(response.data.screenshots));
