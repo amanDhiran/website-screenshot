@@ -12,7 +12,7 @@ export default function ScreenshotsPage() {
     router.push("/")
   }
   return (
-    <div className="container mx-auto h-[90vh] py-10">
+    <div className="container mx-auto min-h-[90vh] py-10">
       <h1 className="text-2xl font-bold mb-6">Generated Screenshots</h1>
       <div className="flex flex-col gap-4">
         {screenshots.length > 0 ? (
